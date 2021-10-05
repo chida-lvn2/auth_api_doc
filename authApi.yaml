@@ -29,7 +29,7 @@ paths:
                 password: aaaaaaaa
       responses:
         '200':
-          $ref: '#components/responses/LoginSuccess'
+          $ref: '#components/responses/LoginSuccessApp'
   /login/web/:
     post:
       tags:
@@ -46,7 +46,7 @@ paths:
                 password: aaaaaaaa
       responses:
         '200':
-          $ref: '#components/responses/LoginSuccessApp'
+          $ref: '#components/responses/LoginSuccess'
   /login/auto/:
     post:
       tags:
@@ -81,7 +81,38 @@ paths:
       responses:
         '200':
           $ref: '#components/responses/LoginSuccess'
-
+  /refresh/:
+    post:
+      tags:
+        - Refresh(SSR)
+      summary: Refresh token in cookie. This is for SSR(Next).
+      requestBody:
+        description: idToken and refreshToken
+        required: true
+        content:
+          application/json:
+            schema:
+              example:
+                idToken: adlkewie.ajdaweelke.akldfjla
+                refreshToken: klasdjwaeoi.dkljaewi.kldjl
+      responses:
+        '200':
+          $ref: '#components/responses/LoginSuccessApp'
+  /logout/:
+    get:
+      tags:
+        - Logout
+      summary: Logout and delete cookie
+      responses:
+        '200':
+          description: success
+          headers:
+            Delete-Cookie:
+              schema:
+                type: array
+                example:
+                  - accessToken
+                  - refreshToken
 components:
   responses:
     LoginSuccess:
@@ -89,10 +120,10 @@ components:
       headers:
         Set-Cookie:
           schema:
-            type: string
+            type: array
             example:
               - accessToken=jasjewiewijfejesa.salkdliawej.laslk
-                refreshToken=ajkljfwaeioeje.jasliwoeafae.jasifjaweiojei
+              - refreshToken=ajkljfwaeioeje.jasliwoeafae.jasifjaweiojei
       content:
         application/json:
           schema:
