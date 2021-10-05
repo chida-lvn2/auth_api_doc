@@ -5,10 +5,10 @@ info:
   termsOfService: https://auth.lvnmatch.com/
   version: 1.0.0
 paths:
-  /login:
+  /login/:
     post:
       tags:
-        - login
+        - Login
       summary: Login with email & password
       parameters:
         - in: query
@@ -23,41 +23,147 @@ paths:
         required: true
         content:
           application/json:
-            example:
-              email: example@example.com
-              password: aaaaaaaa
+            schema:
+              example:
+                email: example@example.com
+                password: aaaaaaaa
       responses:
         '200':
-          description: success
-          content:
-            application/json:
-              schema:
-                type: array
-                example:
-                  idToken: jasjewiewijfejesa.salkdliawej.laslk
-                  refreshToken: ajkljfwaeioeje.jasliwoeafae.jasifjaweiojei
-                  user: 
-                    id: 10000
-                    email: example@example.com
-                    name: foo bar
-                    customer_id: cs11
-                    customer_name: 剛田不動産
-                    consultant_id: 9
-                    consultant_name: 鈴木イチロー
-                    consultant_dept: セーフコオフィス
-                    consultant_email: ichiro@example.com
-                    consultant_phone: 09000000000
-                    site_codes:
-                      - sf
-                      - kz
-                    acl: 12
-                    parent_id: null
-                    children:
-                      - ikkyu
-                    group_id:
-                      - 10
-                      - 20
-                    contract_type: 1
-                    shutout_flag: 0
-                    status: a
-                    selfplan_progress: null
+          $ref: '#components/responses/LoginSuccess'
+  /login/auto/:
+    post:
+      tags:
+        - Auto Login
+      summary: Auto login for appli
+      requestBody:
+        description: idToken and refreshToken
+        required: true
+        content:
+          application/json:
+            schema:
+              example:
+                idToken: adlkewie.ajdaweelke.akldfjla
+                refreshToken: klasdjwaeoi.dkljaewi.kldjl
+      responses:
+        '200':
+          $ref: '#components/responses/LoginSuccess'
+  /login/auto/web/:
+    get:
+      tags:
+        - Auto Login
+      parameters:
+        - in: cookie
+          name: idToken
+          schema:
+            type: string
+        - in: cookie
+          name: refreshToken
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#components/responses/LoginSuccess'
+
+components:
+  responses:
+    LoginSuccess:
+      description: success
+      headers:
+        Set-Cookie:
+          schema:
+            type: string
+            example:
+              - accessToken=jasjewiewijfejesa.salkdliawej.laslk
+                refreshToken=ajkljfwaeioeje.jasliwoeafae.jasifjaweiojei
+      content:
+        application/json:
+          schema:
+            type: array
+            example:
+              idToken: jasjewiewijfejesa.salkdliawej.laslk
+              refreshToken: ajkljfwaeioeje.jasliwoeafae.jasifjaweiojei
+              user: 
+                id: 10000
+                email: example@example.com
+                name: foo bar
+                customer_id: cs11
+                customer_name: 剛田不動産
+                consultant_id: 9
+                consultant_name: 鈴木イチロー
+                consultant_dept: セーフコオフィス
+                consultant_email: ichiro@example.com
+                consultant_phone: 09000000000
+                site_codes:
+                  - sf
+                  - kz
+                acl: 12
+                parent_id: null
+                children:
+                  - ikkyu
+                group_id:
+                  - 10
+                  - 20
+                contract_type: 1
+                shutout_flag: 0
+                status: a
+                selfplan_progress: null
+  schemas:
+    User:
+      type: "object"
+      properties:
+        id: 
+          type: integer
+        email:
+          type: string
+        name:
+          type: string
+        customer_id:
+          type: string
+        customer_name:
+          type: string
+        consultant_id:
+          type: integer
+        consultant_name:
+          type: string
+        consultant_dept:
+          type: string
+        consultant_email:
+          type: string
+        consultant_phone:
+          type: string
+        site_codes:
+          type: array
+        acl:
+          type: integer
+        parent_id:
+          type: integer
+        children:
+          type: array
+        group_id:
+          type: array
+        contract_type:
+          type: integer
+        shutout_flag:
+          type: integer
+        status:
+          type: string
+        selfplan_progress:
+          type: integer
+    Tokens:
+      type: "object"
+      properties:
+        idToken:
+          type: string
+          example: jasjewiewijfejesa.salkdliawej.laslk
+        refreshToken:
+          type: string
+          example: ajkljfwaeioeje.jasliwoeafae.jasifjaweiojei
+  securitySchemes:
+    idToken:
+      type: apiKey
+      in: cookie
+      name: accessToken
+    refreshToken:
+      type: apiKey
+      in: cookie
+      name: refreshToken
