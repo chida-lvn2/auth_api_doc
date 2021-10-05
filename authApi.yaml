@@ -13,7 +13,7 @@ paths:
       parameters:
         - in: query
           name: client
-          description: web => web, selfplan => selfplan
+          description: if selfplan, must be selfplan
           required: false
           schema:
             type: string
@@ -30,11 +30,28 @@ paths:
       responses:
         '200':
           $ref: '#components/responses/LoginSuccess'
+  /login/web/:
+    post:
+      tags:
+        - Login
+      summary: Login with email & password
+      requestBody:
+        description: email and password
+        required: true
+        content:
+          application/json:
+            schema:
+              example:
+                email: example@example.com
+                password: aaaaaaaa
+      responses:
+        '200':
+          $ref: '#components/responses/LoginSuccessApp'
   /login/auto/:
     post:
       tags:
         - Auto Login
-      summary: Auto login for appli
+      summary: Auto login for appli (by secure storage)
       requestBody:
         description: idToken and refreshToken
         required: true
@@ -46,12 +63,12 @@ paths:
                 refreshToken: klasdjwaeoi.dkljaewi.kldjl
       responses:
         '200':
-          $ref: '#components/responses/LoginSuccess'
+          $ref: '#components/responses/LoginSuccessApp'
   /login/auto/web/:
     get:
       tags:
         - Auto Login
-      summary: Auto login for web
+      summary: Auto login for web (by cookie)
       parameters:
         - in: cookie
           name: idToken
@@ -76,6 +93,38 @@ components:
             example:
               - accessToken=jasjewiewijfejesa.salkdliawej.laslk
                 refreshToken=ajkljfwaeioeje.jasliwoeafae.jasifjaweiojei
+      content:
+        application/json:
+          schema:
+            type: array
+            example:
+              user: 
+                id: 10000
+                email: example@example.com
+                name: foo bar
+                customer_id: cs11
+                customer_name: 剛田不動産
+                consultant_id: 9
+                consultant_name: 鈴木イチロー
+                consultant_dept: セーフコオフィス
+                consultant_email: ichiro@example.com
+                consultant_phone: 09000000000
+                site_codes:
+                  - sf
+                  - kz
+                acl: 12
+                parent_id: null
+                children:
+                  - ikkyu
+                group_id:
+                  - 10
+                  - 20
+                contract_type: 1
+                shutout_flag: 0
+                status: a
+                selfplan_progress: null
+    LoginSuccessApp:
+      description: success (appli)
       content:
         application/json:
           schema:
@@ -150,15 +199,6 @@ components:
           type: string
         selfplan_progress:
           type: integer
-    Tokens:
-      type: object
-      properties:
-        idToken:
-          type: string
-          example: jasjewiewijfejesa.salkdliawej.laslk
-        refreshToken:
-          type: string
-          example: ajkljfwaeioeje.jasliwoeafae.jasifjaweiojei
   # securitySchemes:
   #   idToken:
   #     type: apiKey
