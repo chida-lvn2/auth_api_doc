@@ -1,0 +1,63 @@
+openapi: 3.0.0
+info:
+  title: Auth API
+  description: 認証API
+  termsOfService: https://auth.lvnmatch.com/
+  version: 1.0.0
+paths:
+  /login:
+    post:
+      tags:
+        - login
+      summary: Login with email & password
+      parameters:
+        - in: query
+          name: client
+          description: web => web, selfplan => selfplan
+          required: false
+          schema:
+            type: string
+          allowReserved: true
+      requestBody:
+        description: email and password
+        required: true
+        content:
+          application/json:
+            example:
+              email: example@example.com
+              password: aaaaaaaa
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                example:
+                  idToken: jasjewiewijfejesa.salkdliawej.laslk
+                  refreshToken: ajkljfwaeioeje.jasliwoeafae.jasifjaweiojei
+                  user: 
+                    id: 10000
+                    email: example@example.com
+                    name: foo bar
+                    customer_id: cs11
+                    customer_name: 剛田不動産
+                    consultant_id: 9
+                    consultant_name: 鈴木イチロー
+                    consultant_dept: セーフコオフィス
+                    consultant_email: ichiro@example.com
+                    consultant_phone: 09000000000
+                    site_codes:
+                      - sf
+                      - kz
+                    acl: 12
+                    parent_id: null
+                    children:
+                      - ikkyu
+                    group_id:
+                      - 10
+                      - 20
+                    contract_type: 1
+                    shutout_flag: 0
+                    status: a
+                    selfplan_progress: null
