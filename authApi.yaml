@@ -51,6 +51,7 @@ paths:
     get:
       tags:
         - Auto Login
+      summary: Auto login for web
       parameters:
         - in: cookie
           name: idToken
@@ -150,7 +151,7 @@ components:
         selfplan_progress:
           type: integer
     Tokens:
-      type: "object"
+      type: object
       properties:
         idToken:
           type: string
@@ -158,12 +159,12 @@ components:
         refreshToken:
           type: string
           example: ajkljfwaeioeje.jasliwoeafae.jasifjaweiojei
-  securitySchemes:
-    idToken:
-      type: apiKey
-      in: cookie
-      name: accessToken
-    refreshToken:
-      type: apiKey
-      in: cookie
-      name: refreshToken
+  # securitySchemes:
+  #   idToken:
+  #     type: apiKey
+  #     in: cookie
+  #     name: accessToken
+  #   refreshToken:
+  #     type: apiKey
+  #     in: cookie
+  #     name: refreshToken
