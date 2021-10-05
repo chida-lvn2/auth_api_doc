@@ -71,7 +71,7 @@ paths:
       summary: Auto login for web (by cookie)
       parameters:
         - in: cookie
-          name: idToken
+          name: accessToken
           schema:
             type: string
         - in: cookie
@@ -87,7 +87,7 @@ paths:
         - Refresh(SSR)
       summary: Refresh token in cookie. This is for SSR(Next).
       requestBody:
-        description: idToken and refreshToken
+        description: accessToken and refreshToken
         required: true
         content:
           application/json:
